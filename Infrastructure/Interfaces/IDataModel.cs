@@ -1,4 +1,4 @@
-﻿namespace PTD.Infrastructure.Interfaces
+﻿namespace POTD.Infrastructure.Interfaces
 {
     public interface IDataModel
     {

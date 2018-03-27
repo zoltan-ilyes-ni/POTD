@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PTD.Infrastructure.Interfaces;
+using POTD.Infrastructure.Interfaces;
 
-namespace PTD.DataService
+namespace POTD.DataService
 {
     public class RepositoryBase<TEntity> : IDataRepository<TEntity>
         where TEntity : IDataModel

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PTD.Infrastructure.Interfaces
+namespace POTD.Infrastructure.Interfaces
 {
     public interface IDataRepository<TEntity>
         where TEntity : IDataModel

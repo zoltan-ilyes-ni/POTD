@@ -1,6 +1,6 @@
-﻿namespace PTD.Infrastructure.Models
+﻿namespace POTD.Infrastructure.Models
 {
-    public class BacklogItem : DataModelBase
+    public class BacklogItemDataModel : BaseDataModel
     {
         public int ProjectId { get; set; }
         private string Name { get; set; }

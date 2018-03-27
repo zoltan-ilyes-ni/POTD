@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PTD.UI.Properties {
+namespace POTD.UI.Properties {
     using System;
     
     
