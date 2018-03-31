@@ -40,13 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IDataModel.cs" />
-    <Compile Include="Interfaces\IDataRepository.cs" />
-    <Compile Include="Models\BaseDataModel.cs" />
-    <Compile Include="Models\BacklogItemDataModel.cs" />
-    <Compile Include="Models\DayDataModel.cs" />
-    <Compile Include="Models\ProjectDataModel.cs" />
-    <Compile Include="Models\TaskDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

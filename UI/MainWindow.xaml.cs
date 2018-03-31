@@ -10,6 +10,7 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new POTD.UI.ViewModels.MainViewModel();
         }
     }
 }

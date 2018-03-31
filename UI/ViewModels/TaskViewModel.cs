@@ -1,4 +1,4 @@
-﻿using POTD.Infrastructure.Models;
+﻿using POTD.DataService.Models;
 
 namespace POTD.UI.ViewModels
 {
@@ -9,7 +9,7 @@ namespace POTD.UI.ViewModels
         private string _status;
         private int _minutesSpent;
 
-        private TaskDataModel TaskDataModel { get; set; }
+        private TaskModel TaskDataModel { get; set; }
 
         public BacklogItemViewModel BacklogItem
         {
