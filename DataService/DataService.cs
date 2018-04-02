@@ -8,17 +8,76 @@ namespace POTD.DataService
 {
     public class DataService
     {
-        public string SourcePath { get; private set; }
-
+        private readonly DateTime _backlogDate;
+        private DayModel _backlog;
         private UnitOfWork _unitOfWork;
-        private readonly DateTime _today, _tomorrow, _backlogDate;
 
         public DataService()
         {
             _unitOfWork = new UnitOfWork();
-            _today = DateTime.Today;
-            _tomorrow = DateTime.Today.AddDays(1);
             _backlogDate = new DateTime(2099, 12, 31);
+        }
+
+        public string SourcePath { get; private set; }
+
+        public DayModel AddDay(DateTime date)
+        {
+            return _unitOfWork.DayRepository.Add(
+                new DayModel(_unitOfWork.DayRepository.GetNextId())
+                {
+                    Date = date,
+                });
+        }
+
+        public ProjectModel AddProject(string name, string color)
+        {
+            return _unitOfWork.ProjectRepository.Add(
+                new ProjectModel(_unitOfWork.ProjectRepository.GetNextId())
+                {
+                    Name = name,
+                    Color = color,
+                });
+        }
+
+        public TaskModel AddTaskToBacklog(string name, string notes, int priority, ProjectModel project, int rank, bool done, int time)
+        {
+            return AddTaskToDay(_backlog, name, notes, priority, project, rank, done, time);
+        }
+
+        public TaskModel AddTaskToDay(DayModel day, string name, string notes, int priority, ProjectModel project, int rank, bool done, int time)
+        {
+            return _unitOfWork.TaskRepository.Add(
+                new TaskModel(_unitOfWork.TaskRepository.GetNextId())
+                {
+                    DayId = day.Id,
+                    Name = name,
+                    Notes = notes,
+                    Priority = priority,
+                    ProjectId = project.Id,
+                    Rank = rank,
+                    Done = done,
+                    Time = time,
+                });
+        }
+
+        public List<DayModel> GetAllDays() => _unitOfWork.DayRepository.All.Where(d => d.Date != _backlogDate).ToList();
+
+        public List<TaskModel> GetTasksByDay(DayModel day) => _unitOfWork.TaskRepository.All.Where(t => t.DayId == day.Id).ToList();
+
+        public void Load(string sourcePath)
+        {
+            _unitOfWork = new UnitOfWork(sourcePath);
+            SourcePath = sourcePath;
+
+            // Add Backlog, if not present
+            if ((_backlog = _unitOfWork.DayRepository.All.FirstOrDefault(d => d.Date == _backlogDate)) == null)
+            {
+                _backlog = _unitOfWork.DayRepository.Add(
+                    new DayModel(_unitOfWork.DayRepository.GetNextId())
+                    {
+                        Date = _backlogDate
+                    });
+            }
         }
 
         public void Save() => SaveAs(SourcePath);
@@ -30,31 +89,5 @@ namespace POTD.DataService
             _unitOfWork.Save(sourcePath);
             SourcePath = sourcePath;
         }
-
-        public void Load(string sourcePath)
-        {
-            _unitOfWork = new UnitOfWork(sourcePath);
-            SourcePath = sourcePath;
-
-            // Add Today if not present
-            if (_unitOfWork.DayRepository.All.FirstOrDefault(d => d.Date == _today) == null)
-            {
-                _unitOfWork.DayRepository.Add(_today);
-            }
-
-            // Add Tomorrow, if not present
-            if (_unitOfWork.DayRepository.All.FirstOrDefault(d => d.Date == _tomorrow) == null)
-            {
-                _unitOfWork.DayRepository.Add(_tomorrow);
-            }
-
-            // Add Backlog, if not present
-            if (_unitOfWork.DayRepository.All.FirstOrDefault(d => d.Date == _backlogDate) == null)
-            {
-                _unitOfWork.DayRepository.Add(_backlogDate);
-            }
-        }
-
-        public List<DayModel> GetAllDays() => _unitOfWork.DayRepository.All.Where(d => d.Date != _backlogDate).ToList();
     }
 }

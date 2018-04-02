@@ -9,17 +9,45 @@ namespace POTD.UI.ViewModels
         private string _dateString;
 
         private ObservableCollection<TaskViewModel> _tasks;
-        private DateTime _date;
 
-        public string DateString
+        public DayViewModel(DayModel dayModel)
         {
-            get => _dateString;
-            private set => SetProperty(ref _dateString, value);
+            DayModel = dayModel;
         }
+
+        private DayModel DayModel { get; set; }
 
         public DateTime Date
         {
             get => DayModel.Date;
+        }
+
+        public string DateString
+        {
+            get
+            {
+                if (_dateString == null)
+                {
+                    if (DayModel.Date == DateTime.Today)
+                    {
+                        _dateString = "Today";
+                    }
+                    else if (DayModel.Date == DateTime.Today.AddDays(+1))
+                    {
+                        _dateString = "Tomorrow";
+                    }
+                    else if (DayModel.Date == DateTime.Today.AddDays(-1))
+                    {
+                        _dateString = "Yesterday";
+                    }
+                    else
+                    {
+                        _dateString = DayModel.Date.ToLongDateString();
+                    }
+                }
+
+                return _dateString;
+            }
         }
 
         public ObservableCollection<TaskViewModel> Tasks
@@ -28,36 +56,22 @@ namespace POTD.UI.ViewModels
             set => SetProperty(ref _tasks, value);
         }
 
-        public DayModel DayModel { get; private set; }
-
-        public DayViewModel(DayModel dayModel)
+        public string TimeString
         {
-            DateString = DateToString(dayModel.Date);
+            get
+            {
+                int all = 0, done = 0;
+                foreach (var t in Tasks)
+                {
+                    all += t.Time.Value;
+                    done += t.Done ? t.Time.Value : 0;
+                }
 
-            DayModel = dayModel;
-        }
+                int allHours = all / 60;
+                int allMinutes = all - allHours * 60;
 
-        private string DateToString(DateTime date)
-        {
-            string dateString;
-            if (date == DateTime.Today)
-            {
-                dateString = "Today";
+                return $"{allHours.ToString()} Hour(s) {allMinutes} Minutes";
             }
-            else if (date == DateTime.Today.AddDays(+1))
-            {
-                dateString = "Tomorrow";
-            }
-            else if (date == DateTime.Today.AddDays(-1))
-            {
-                dateString = "Yesterday";
-            }
-            else
-            {
-                dateString = date.ToLongDateString();
-            }
-
-            return dateString;
         }
     }
 }

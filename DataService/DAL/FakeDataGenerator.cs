@@ -10,11 +10,23 @@ namespace POTD.DataService.DAL
         {
             DayRepository repo = new DayRepository();
 
-            repo.Add(new DayModel(0, DateTime.Today.AddDays(-1)));
+            repo.Add(
+                new DayModel(0)
+                {
+                    Date = DateTime.Today.AddDays(-1)
+                });
 
-            repo.Add(new DayModel(2, DateTime.Today.AddDays(1)));
+            repo.Add(
+                new DayModel(2)
+                {
+                    Date = DateTime.Today.AddDays(1)
+                });
 
-            repo.Add(new DayModel(1, DateTime.Today));
+            repo.Add(
+                new DayModel(1)
+                {
+                    Date = DateTime.Today
+                });
 
             return repo;
         }
@@ -37,8 +49,23 @@ namespace POTD.DataService.DAL
 
             repo.Add(new TaskModel(0)
             {
+                Name = "Fake task 1",
                 ProjectId = 0,
                 DayId = 1,
+            });
+
+            repo.Add(new TaskModel(1)
+            {
+                Name = "Fake task 2",
+                ProjectId = 0,
+                DayId = 1,
+            });
+
+            repo.Add(new TaskModel(2)
+            {
+                Name = "Fake task 3",
+                ProjectId = 0,
+                DayId = 0,
             });
 
             return repo;

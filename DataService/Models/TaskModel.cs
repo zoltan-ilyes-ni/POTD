@@ -6,7 +6,9 @@
         {
         }
 
-        public int ProjectId { get; set; }
+        public int DayId { get; set; }
+
+        public bool Done { get; set; }
 
         public string Name { get; set; }
 
@@ -14,12 +16,10 @@
 
         public int Priority { get; set; }
 
-        public int DayId { get; set; }
+        public int ProjectId { get; set; }
 
         public int Rank { get; set; }
 
-        public string Status { get; set; }
-
-        public int MinutesSpent { get; set; }
+        public int Time { get; set; }
     }
 }

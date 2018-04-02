@@ -6,8 +6,19 @@
              xmlns:local="clr-namespace:POTD.UI.Views"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <TextBlock
-                    Text="{Binding DateString}"
-                    Padding="10"
-                    FontWeight="Bold" />
+
+    <StackPanel Orientation="Horizontal">
+        <TextBlock
+            Text="{Binding DateString}"
+            HorizontalAlignment="Stretch"
+            Width="150"
+            Padding="10"
+            FontWeight="Bold" />
+        <TextBlock
+            Text="{Binding TimeString}"
+            HorizontalAlignment="Stretch"
+            Width="200"
+            Padding="10"
+            FontWeight="Bold" />
+    </StackPanel>
 </UserControl>

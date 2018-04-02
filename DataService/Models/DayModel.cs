@@ -8,11 +8,6 @@ namespace POTD.DataService.Models
         {
         }
 
-        public DayModel(int id, DateTime date) : this(id)
-        {
-            Date = date.Date;
-        }
-
         public DateTime Date { get; set; }
     }
 }

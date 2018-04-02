@@ -7,13 +7,20 @@
         xmlns:views="clr-namespace:POTD.UI.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <TreeView ItemsSource="{Binding Days}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate>
-                    <views:DayView />
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
+
+    <Window.Resources>
+        <DataTemplate x:Key="TasksLevelTemplate">
+            <views:TaskView />
+        </DataTemplate>
+        <HierarchicalDataTemplate x:Key="DaysLevelTemplate"
+                                  ItemsSource="{Binding Tasks}"
+                                  ItemTemplate="{StaticResource TasksLevelTemplate}">
+            <views:DayView />
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+
+    <Grid HorizontalAlignment="Stretch">
+        <TreeView ItemsSource="{Binding Days}"
+                  ItemTemplate="{StaticResource DaysLevelTemplate}" />
     </Grid>
 </Window>
