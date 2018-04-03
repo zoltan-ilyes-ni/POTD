@@ -17,8 +17,17 @@
         <TextBlock
             Text="{Binding TimeString}"
             HorizontalAlignment="Stretch"
-            Width="200"
+            Width="300"
             Padding="10"
             FontWeight="Bold" />
+        <Button
+            Content="Ë"
+            FontFamily="Wingdings 2"
+            FontSize="18"
+            BorderThickness="0"
+            Background="Transparent"
+            Width="20"
+            Foreground="SlateGray"
+            Command="{Binding AddTaskCommand}" />
     </StackPanel>
 </UserControl>

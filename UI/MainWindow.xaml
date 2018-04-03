@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UI"
         xmlns:views="clr-namespace:POTD.UI.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Have a productive day !" Height="800" Width="550">
 
     <Window.Resources>
         <DataTemplate x:Key="TasksLevelTemplate">
@@ -19,8 +19,28 @@
         </HierarchicalDataTemplate>
     </Window.Resources>
 
-    <Grid HorizontalAlignment="Stretch">
-        <TreeView ItemsSource="{Binding Days}"
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Bottom">
+            <ToggleButton Content="Top"
+                          IsChecked="{Binding Path=Topmost, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                          DockPanel.Dock="Left"
+                          Margin="5,5,5,5"
+                          Padding="20,5,20,5" />
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding SourcePath}" Margin="5,5,20,5" VerticalAlignment="Center" />
+                <Button Content="Open" Margin="5,5,5,5" Padding="20,5,20,5" Command="{Binding OpenCommand}" />
+                <Button Content="Save" Margin="5,5,10,5" Padding="20,5,20,5" Command="{Binding SaveCommand}" />
+            </StackPanel>
+        </DockPanel>
+
+        <!--<GroupBox Header="Backlog"
+                  Width="480"
+                  DockPanel.Dock="Right">
+            <TreeView ItemsSource="{Binding Backlog}"
+                      ItemTemplate="{StaticResource TasksLevelTemplate}" />
+        </GroupBox>-->
+        <TreeView
+                  ItemsSource="{Binding Days}"
                   ItemTemplate="{StaticResource DaysLevelTemplate}" />
-    </Grid>
+    </DockPanel>
 </Window>

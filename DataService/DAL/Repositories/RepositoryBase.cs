@@ -44,7 +44,7 @@ namespace POTD.DataService.DAL.Repositories
                     nextId = entity.Id;
                 }
             }
-            return nextId++;
+            return ++nextId;
         }
 
         public void Remove(TEntity entity)

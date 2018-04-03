@@ -18,11 +18,15 @@
             ItemsSource="{Binding TimeValues}"
             SelectedItem="{Binding Time}"
             Width="150"
-            Margin="0,0,10,0" />
+            Margin="0,0,10,0"
+            Background="Transparent" />
         <ToggleButton
-            Content="Done"
+            Content="P"
+            FontFamily="Wingdings 2"
+            FontSize="26"
             IsChecked="{Binding Done}"
-            Width="70"
+            VerticalAlignment="Bottom"
+            Width="40"
             Margin="0,0,10,0">
             <ToggleButton.Style>
                 <Style TargetType="{x:Type ToggleButton}">
@@ -30,10 +34,10 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="ToggleButton">
                                 <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        BorderThickness="0"
                                         Background="{TemplateBinding Background}">
                                     <ContentPresenter HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center" />
+                                                      VerticalAlignment="Center" />
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -41,6 +45,9 @@
                     <Style.Triggers>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter Property="Background" Value="MediumSeaGreen" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="false">
+                            <Setter Property="Background" Value="Transparent" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>

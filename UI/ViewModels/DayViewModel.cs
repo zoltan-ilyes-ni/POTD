@@ -1,25 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 using POTD.DataService.Models;
 
 namespace POTD.UI.ViewModels
 {
     internal class DayViewModel : ViewModelBase
     {
+        private ICommand _addTaskCommand;
+        private DataService.DataService _dataService;
         private string _dateString;
-
+        private DayModel _dayModel;
         private ObservableCollection<TaskViewModel> _tasks;
 
-        public DayViewModel(DayModel dayModel)
+        public DayViewModel(DayModel dayModel, DataService.DataService dataService)
         {
-            DayModel = dayModel;
+            _dayModel = dayModel;
+            _dataService = dataService;
+
+            List<TaskViewModel> tasks = new List<TaskViewModel>();
+            foreach (TaskModel task in _dataService.GetTasksByDay(dayModel))
+            {
+                tasks.Add(new TaskViewModel(task, this, null));
+            }
+
+            this.Tasks = new ObservableCollection<TaskViewModel>(tasks.OrderBy(t => t.Rank));
+
+            this.IsExpanded = dayModel.Date == DateTime.Today;
         }
 
-        private DayModel DayModel { get; set; }
+        public ICommand AddTaskCommand
+        {
+            get
+            {
+                return _addTaskCommand ?? (_addTaskCommand = new CommandHandler(() => AddTask(), true));
+            }
+        }
 
         public DateTime Date
         {
-            get => DayModel.Date;
+            get => _dayModel.Date;
         }
 
         public string DateString
@@ -28,27 +50,29 @@ namespace POTD.UI.ViewModels
             {
                 if (_dateString == null)
                 {
-                    if (DayModel.Date == DateTime.Today)
+                    if (_dayModel.Date == DateTime.Today)
                     {
                         _dateString = "Today";
                     }
-                    else if (DayModel.Date == DateTime.Today.AddDays(+1))
+                    else if (_dayModel.Date == DateTime.Today.AddDays(+1))
                     {
                         _dateString = "Tomorrow";
                     }
-                    else if (DayModel.Date == DateTime.Today.AddDays(-1))
+                    else if (_dayModel.Date == DateTime.Today.AddDays(-1))
                     {
                         _dateString = "Yesterday";
                     }
                     else
                     {
-                        _dateString = DayModel.Date.ToLongDateString();
+                        _dateString = _dayModel.Date.ToLongDateString();
                     }
                 }
 
                 return _dateString;
             }
         }
+
+        public bool IsExpanded { get; set; }
 
         public ObservableCollection<TaskViewModel> Tasks
         {
@@ -72,6 +96,25 @@ namespace POTD.UI.ViewModels
 
                 return $"{allHours.ToString()} Hour(s) {allMinutes} Minutes";
             }
+        }
+
+        private void AddTask()
+        {
+            Tasks.Add(
+                new TaskViewModel(
+                    taskModel: _dataService.AddTaskToDay(
+                                                day: _dayModel,
+                                                name: "",
+                                                notes: "",
+                                                priority: 1,
+                                                project: null,
+                                                rank: 0,
+                                                done: false,
+                                                time: 0),
+                    dayViewModel: this,
+                    projectViewModel: null));
+
+            NotifyPropertyChanged(nameof(TimeString));
         }
     }
 }

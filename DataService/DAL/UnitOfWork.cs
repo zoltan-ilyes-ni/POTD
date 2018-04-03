@@ -1,4 +1,5 @@
-﻿using POTD.DataService.DAL.Repositories;
+﻿using Newtonsoft.Json;
+using POTD.DataService.DAL.Repositories;
 
 namespace POTD.DataService.DAL
 {
@@ -6,9 +7,9 @@ namespace POTD.DataService.DAL
     {
         public UnitOfWork()
         {
-            ProjectRepository = FakeDataGenerator.GenerateProjectRepository();
-            TaskRepository = FakeDataGenerator.GenerateTaskRepository();
-            DayRepository = FakeDataGenerator.GenerateDayRepository();
+            ProjectRepository = new ProjectRepository();
+            TaskRepository = new TaskRepository();
+            DayRepository = new DayRepository();
         }
 
         public UnitOfWork(string filePath)
@@ -17,6 +18,10 @@ namespace POTD.DataService.DAL
             {
                 throw new System.ArgumentException("File Path is Empty!", nameof(filePath));
             }
+            UnitOfWork tmp = JsonConvert.DeserializeObject<UnitOfWork>(System.IO.File.ReadAllText(filePath));
+            ProjectRepository = tmp.ProjectRepository;
+            TaskRepository = tmp.TaskRepository;
+            DayRepository = tmp.DayRepository;
         }
 
         public DayRepository DayRepository { get; private set; }
@@ -27,6 +32,8 @@ namespace POTD.DataService.DAL
 
         public void Save(string filePath)
         {
+            string serializedData = JsonConvert.SerializeObject(this);
+            System.IO.File.WriteAllText(filePath, serializedData);
         }
     }
 }

@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using Microsoft.Win32;
 using POTD.DataService.Models;
 
 namespace POTD.UI.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
+        private ObservableCollection<TaskViewModel> _backlog;
         private DataService.DataService _dataService;
         private ObservableCollection<DayViewModel> _days;
+        private ICommand _openCommand, _saveCommand;
 
         public MainViewModel()
         {
             _dataService = new DataService.DataService();
-            Initialize();
+            LoadContent();
+        }
+
+        public ObservableCollection<TaskViewModel> Backlog
+        {
+            get => _backlog;
+            private set => SetProperty(ref _backlog, value);
         }
 
         public ObservableCollection<DayViewModel> Days
@@ -23,7 +33,25 @@ namespace POTD.UI.ViewModels
             private set => SetProperty(ref _days, value);
         }
 
-        private void Initialize()
+        public ICommand OpenCommand
+        {
+            get
+            {
+                return _openCommand ?? (_openCommand = new CommandHandler(() => Open(), true));
+            }
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new CommandHandler(() => Save(), true));
+            }
+        }
+
+        public string SourcePath { get => _dataService?.SourcePath; }
+
+        private void LoadContent()
         {
             if (_dataService == null)
             {
@@ -35,27 +63,51 @@ namespace POTD.UI.ViewModels
 
             foreach (DayModel day in _dataService.GetAllDays())
             {
-                days.Add(InitializeDayViewModel(day));
+                days.Add(new DayViewModel(day, _dataService));
             }
 
             Days = new ObservableCollection<DayViewModel>(days.OrderByDescending(d => d.Date));
 
             // -------------- Backlog ------------------------
+            List<TaskViewModel> backlog = new List<TaskViewModel>();
+            //foreach(TaskModel in )
+
+            NotifyPropertyChanged(nameof(SourcePath));
         }
 
-        private DayViewModel InitializeDayViewModel(DayModel dayModel)
+        private void Open()
         {
-            DayViewModel dayViewModel = new DayViewModel(dayModel);
-            dayViewModel.Tasks = new ObservableCollection<TaskViewModel>();
-
-            List<TaskViewModel> tasks = new List<TaskViewModel>();
-            foreach (TaskModel task in _dataService.GetTasksByDay(dayModel))
+            OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                tasks.Add(new TaskViewModel(task, dayViewModel, null));
+                FileName = SourcePath,
+                Filter = "JSON Documents|*.json",
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _dataService.Load(openFileDialog.FileName);
+                LoadContent();
             }
+        }
 
-            dayViewModel.Tasks = new ObservableCollection<TaskViewModel>(tasks.OrderBy(t => t.Rank));
-            return dayViewModel;
+        private void Save()
+        {
+            if (!string.IsNullOrEmpty(SourcePath))
+            {
+                _dataService.Save();
+            }
+            else
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog()
+                {
+                    FileName = SourcePath,
+                    Filter = "JSON Documents|*.json",
+                };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    _dataService.SaveAs(saveFileDialog.FileName);
+                    NotifyPropertyChanged(nameof(SourcePath));
+                }
+            }
         }
     }
 }

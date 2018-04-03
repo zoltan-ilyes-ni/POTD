@@ -16,9 +16,44 @@ namespace POTD.DataService
         {
             _unitOfWork = new UnitOfWork();
             _backlogDate = new DateTime(2099, 12, 31);
+            Load();
         }
 
         public string SourcePath { get; private set; }
+
+        private void Load()
+        {
+            // Add today and tomorow, if not present
+            if (_unitOfWork.DayRepository.GetByDate(DateTime.Today) == null)
+            {
+                _unitOfWork.DayRepository.Add(
+                    new DayModel(_unitOfWork.DayRepository.GetNextId())
+                    {
+                        Date = DateTime.Today,
+                    });
+            }
+
+            DateTime tomorrow = DateTime.Today.AddDays(1);
+
+            if (_unitOfWork.DayRepository.GetByDate(tomorrow) == null)
+            {
+                _unitOfWork.DayRepository.Add(
+                    new DayModel(_unitOfWork.DayRepository.GetNextId())
+                    {
+                        Date = tomorrow,
+                    });
+            }
+
+            // Add Backlog, if not present
+            if ((_backlog = _unitOfWork.DayRepository.GetByDate(_backlogDate)) == null)
+            {
+                _backlog = _unitOfWork.DayRepository.Add(
+                    new DayModel(_unitOfWork.DayRepository.GetNextId())
+                    {
+                        Date = _backlogDate,
+                    });
+            }
+        }
 
         public DayModel AddDay(DateTime date)
         {
@@ -53,7 +88,7 @@ namespace POTD.DataService
                     Name = name,
                     Notes = notes,
                     Priority = priority,
-                    ProjectId = project.Id,
+                    ProjectId = project?.Id ?? -1,
                     Rank = rank,
                     Done = done,
                     Time = time,
@@ -69,23 +104,13 @@ namespace POTD.DataService
             _unitOfWork = new UnitOfWork(sourcePath);
             SourcePath = sourcePath;
 
-            // Add Backlog, if not present
-            if ((_backlog = _unitOfWork.DayRepository.All.FirstOrDefault(d => d.Date == _backlogDate)) == null)
-            {
-                _backlog = _unitOfWork.DayRepository.Add(
-                    new DayModel(_unitOfWork.DayRepository.GetNextId())
-                    {
-                        Date = _backlogDate
-                    });
-            }
+            Load();
         }
 
         public void Save() => SaveAs(SourcePath);
 
         public void SaveAs(string sourcePath)
         {
-            // Todo: trim empty days
-
             _unitOfWork.Save(sourcePath);
             SourcePath = sourcePath;
         }
