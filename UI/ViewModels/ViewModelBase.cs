@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal abstract class ViewModelBase : INotifyPropertyChanged
     {

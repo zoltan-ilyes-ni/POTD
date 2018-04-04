@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UI"
-        xmlns:views="clr-namespace:POTD.UI.Views"
+        xmlns:views="clr-namespace:PlanYourDay.UI.Views"
         mc:Ignorable="d"
-        Title="Have a productive day !" Height="800" Width="550">
+        Title="Have a productive day !" Height="800" Width="520">
 
     <Window.Resources>
         <DataTemplate x:Key="TasksLevelTemplate">

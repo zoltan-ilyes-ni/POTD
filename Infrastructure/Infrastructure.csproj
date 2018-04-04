@@ -7,8 +7,8 @@
     <ProjectGuid>{BCC42CAE-165E-4140-A4B3-94BAA672BFDF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>POTD.Infrastructure</RootNamespace>
-    <AssemblyName>POTD.Infrastructure</AssemblyName>
+    <RootNamespace>PlanYourDay.Infrastructure</RootNamespace>
+    <AssemblyName>PlanYourDay.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

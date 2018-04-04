@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.DataService.DAL.Repositories
+namespace PlanYourDay.DataService.DAL.Repositories
 {
     internal class DayRepository : RepositoryBase<DayModel>
     {

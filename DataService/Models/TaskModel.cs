@@ -1,4 +1,4 @@
-﻿namespace POTD.DataService.Models
+﻿namespace PlanYourDay.DataService.Models
 {
     public class TaskModel : ModelBase
     {

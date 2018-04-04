@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace POTD.UI.Views
+namespace PlanYourDay.UI.Views
 {
     /// <summary>
     /// Interaction logic for TaskView.xaml

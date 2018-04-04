@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.Win32;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {

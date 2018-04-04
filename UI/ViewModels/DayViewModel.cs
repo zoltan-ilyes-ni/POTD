@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal class DayViewModel : ViewModelBase
     {
@@ -94,7 +94,7 @@ namespace POTD.UI.ViewModels
                 int allHours = all / 60;
                 int allMinutes = all - allHours * 60;
 
-                return $"{allHours.ToString()} Hour(s) {allMinutes} Minutes";
+                return $"{allHours.ToString()} hrs {allMinutes} min";
             }
         }
 

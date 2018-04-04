@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal class CommandHandler : ICommand
     {

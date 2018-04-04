@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace POTD.DataService.Models
+namespace PlanYourDay.DataService.Models
 {
     public class DayModel : ModelBase
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POTD.DataService.DAL;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.DAL;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.DataService
+namespace PlanYourDay.DataService
 {
     public class DataService
     {

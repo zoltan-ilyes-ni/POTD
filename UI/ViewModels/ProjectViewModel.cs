@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal class ProjectViewModel : ViewModelBase
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.UI.ViewModels
+namespace PlanYourDay.UI.ViewModels
 {
     internal class TaskViewModel : ViewModelBase
     {
@@ -16,32 +16,32 @@ namespace POTD.UI.ViewModels
             {
                 new TimeViewModel()
                 {
-                    DisplayValue = "0 Minutes",
+                    DisplayValue = "0 min",
                     Value = 0
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "15 Minutes",
+                    DisplayValue = "15 min",
                     Value = 15
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "30 Minutes",
+                    DisplayValue = "30 min",
                     Value = 30
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "45 Minutes",
+                    DisplayValue = "45 min",
                     Value = 45
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "1 Hour",
+                    DisplayValue = "1 hrs",
                     Value = 60
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "1.5 Hours",
+                    DisplayValue = "1.5 hrs",
                     Value = 90
                 },
                 new TimeViewModel()
@@ -51,22 +51,22 @@ namespace POTD.UI.ViewModels
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "2.5 Hours",
+                    DisplayValue = "2.5 hrs",
                     Value = 150
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "3 Hours",
+                    DisplayValue = "3 hrs",
                     Value = 180
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "3.5 Hours",
+                    DisplayValue = "3.5 hrs",
                     Value = 210
                 },
                 new TimeViewModel()
                 {
-                    DisplayValue = "4 Hours",
+                    DisplayValue = "4 hrs",
                     Value = 240
                 }
             };

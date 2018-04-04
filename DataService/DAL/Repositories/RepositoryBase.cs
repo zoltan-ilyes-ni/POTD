@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.DataService.DAL.Repositories
+namespace PlanYourDay.DataService.DAL.Repositories
 {
     internal abstract class RepositoryBase<TEntity>
         where TEntity : ModelBase

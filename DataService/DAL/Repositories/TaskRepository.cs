@@ -1,6 +1,6 @@
-﻿using POTD.DataService.Models;
+﻿using PlanYourDay.DataService.Models;
 
-namespace POTD.DataService.DAL.Repositories
+namespace PlanYourDay.DataService.DAL.Repositories
 {
     internal class TaskRepository : RepositoryBase<TaskModel>
     {

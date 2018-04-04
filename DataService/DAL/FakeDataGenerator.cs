@@ -1,8 +1,8 @@
 ﻿using System;
-using POTD.DataService.DAL.Repositories;
-using POTD.DataService.Models;
+using PlanYourDay.DataService.DAL.Repositories;
+using PlanYourDay.DataService.Models;
 
-namespace POTD.DataService.DAL
+namespace PlanYourDay.DataService.DAL
 {
     internal static class FakeDataGenerator
     {

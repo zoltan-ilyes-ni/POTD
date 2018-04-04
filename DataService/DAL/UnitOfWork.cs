@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using POTD.DataService.DAL.Repositories;
+using PlanYourDay.DataService.DAL.Repositories;
 
-namespace POTD.DataService.DAL
+namespace PlanYourDay.DataService.DAL
 {
     internal class UnitOfWork
     {

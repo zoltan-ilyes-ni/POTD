@@ -1,4 +1,4 @@
-﻿namespace POTD.UI.ViewModels
+﻿namespace PlanYourDay.UI.ViewModels
 {
     public class TimeViewModel
     {
