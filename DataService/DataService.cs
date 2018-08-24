@@ -3,54 +3,57 @@ using System.Collections.Generic;
 using System.Linq;
 using PlanYourDay.DataService.DAL;
 using PlanYourDay.DataService.Models;
+using PlanYourDay.DateTimeHelper;
 
 namespace PlanYourDay.DataService
 {
     public class DataService
     {
-        private readonly DateTime _backlogDate;
         private DayModel _backlog;
         private UnitOfWork _unitOfWork;
 
         public DataService()
         {
             _unitOfWork = new UnitOfWork();
-            _backlogDate = new DateTime(2099, 12, 31);
             Load();
+        }
+
+        public DataService(string sourcePath)
+        {
+            Load(sourcePath);
         }
 
         public string SourcePath { get; private set; }
 
         private void Load()
         {
-            // Add today and tomorow, if not present
-            if (_unitOfWork.DayRepository.GetByDate(DateTime.Today) == null)
+            // Add today if not present
+            if (_unitOfWork.DayRepository.GetByDate(DateHelper.Today) == null)
             {
                 _unitOfWork.DayRepository.Add(
                     new DayModel(_unitOfWork.DayRepository.GetNextId())
                     {
-                        Date = DateTime.Today,
+                        Date = DateHelper.Today,
                     });
             }
 
-            DateTime tomorrow = DateTime.Today.AddDays(1);
-
-            if (_unitOfWork.DayRepository.GetByDate(tomorrow) == null)
+            // Add tomorrow/next business day if not present
+            if (_unitOfWork.DayRepository.GetByDate(DateHelper.NextBusinessDay) == null)
             {
                 _unitOfWork.DayRepository.Add(
                     new DayModel(_unitOfWork.DayRepository.GetNextId())
                     {
-                        Date = tomorrow,
+                        Date = DateHelper.NextBusinessDay,
                     });
             }
 
             // Add Backlog, if not present
-            if ((_backlog = _unitOfWork.DayRepository.GetByDate(_backlogDate)) == null)
+            if ((_backlog = _unitOfWork.DayRepository.GetByDate(DateHelper.BacklogDate)) == null)
             {
                 _backlog = _unitOfWork.DayRepository.Add(
                     new DayModel(_unitOfWork.DayRepository.GetNextId())
                     {
-                        Date = _backlogDate,
+                        Date = DateHelper.BacklogDate,
                     });
             }
         }
@@ -95,7 +98,7 @@ namespace PlanYourDay.DataService
                 });
         }
 
-        public List<DayModel> GetAllDays() => _unitOfWork.DayRepository.All.Where(d => d.Date != _backlogDate).ToList();
+        public List<DayModel> GetAllDays() => _unitOfWork.DayRepository.All.Where(d => d.Date != DateHelper.BacklogDate).ToList();
 
         public List<TaskModel> GetTasksByDay(DayModel day) => _unitOfWork.TaskRepository.All.Where(t => t.DayId == day.Id).ToList();
 

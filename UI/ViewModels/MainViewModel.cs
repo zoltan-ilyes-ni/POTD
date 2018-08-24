@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using PlanYourDay.DataService.Models;
+using PlanYourDay.UI.Helpers;
 
 namespace PlanYourDay.UI.ViewModels
 {
@@ -15,9 +17,14 @@ namespace PlanYourDay.UI.ViewModels
         private ObservableCollection<DayViewModel> _days;
         private ICommand _openCommand, _saveCommand;
 
+        public TaskViewModel SelectedTask
+        {
+            get; set;
+        }
+
         public MainViewModel()
         {
-            _dataService = new DataService.DataService();
+            _dataService = new DataService.DataService(@"d:\Work\PlanYourDay.json");
             LoadContent();
         }
 

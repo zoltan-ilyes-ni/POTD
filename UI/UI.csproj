@@ -56,7 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModels\CommandHandler.cs" />
+    <Compile Include="Helpers\BindableSelectedItemBehavior.cs" />
+    <Compile Include="Helpers\CommandHandler.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DayViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
@@ -120,6 +121,10 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{25a4754f-cdd2-4533-9a42-89afb5211cbb}</Project>
       <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DateTimeHelper\DateTimeHelper.csproj">
+      <Project>{ca3c46ca-3f62-452f-98ad-dd70bc4b9f9b}</Project>
+      <Name>DateTimeHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{bcc42cae-165e-4140-a4b3-94baa672bfdf}</Project>

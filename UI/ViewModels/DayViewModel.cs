@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using PlanYourDay.DataService.Models;
+using PlanYourDay.UI.Helpers;
+using PlanYourDay.DateTimeHelper;
 
 namespace PlanYourDay.UI.ViewModels
 {
@@ -50,22 +52,7 @@ namespace PlanYourDay.UI.ViewModels
             {
                 if (_dateString == null)
                 {
-                    if (_dayModel.Date == DateTime.Today)
-                    {
-                        _dateString = "Today";
-                    }
-                    else if (_dayModel.Date == DateTime.Today.AddDays(+1))
-                    {
-                        _dateString = "Tomorrow";
-                    }
-                    else if (_dayModel.Date == DateTime.Today.AddDays(-1))
-                    {
-                        _dateString = "Yesterday";
-                    }
-                    else
-                    {
-                        _dateString = _dayModel.Date.ToLongDateString();
-                    }
+                    _dateString = DateHelper.DateToString(Date);
                 }
 
                 return _dateString;
@@ -91,10 +78,7 @@ namespace PlanYourDay.UI.ViewModels
                     done += t.Done ? t.Time.Value : 0;
                 }
 
-                int allHours = all / 60;
-                int allMinutes = all - allHours * 60;
-
-                return $"{allHours.ToString()} hrs {allMinutes} min";
+                return $"{TimeHelper.TimeToString(done)} / {TimeHelper.TimeToString(all)}";
             }
         }
 

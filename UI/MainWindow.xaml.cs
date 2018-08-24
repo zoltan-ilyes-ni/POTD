@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using PlanYourDay.UI.ViewModels;
 
 namespace UI
 {
@@ -10,7 +11,12 @@ namespace UI
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new PlanYourDay.UI.ViewModels.MainViewModel();
+            DataContext = new MainViewModel();
+        }
+
+        private void DaysTreeView_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            (DataContext as MainViewModel).SelectedTask = e.NewValue as TaskViewModel;
         }
     }
 }

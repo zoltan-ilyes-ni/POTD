@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace PlanYourDay.UI.ViewModels
+namespace PlanYourDay.UI.Helpers
 {
     internal class CommandHandler : ICommand
     {

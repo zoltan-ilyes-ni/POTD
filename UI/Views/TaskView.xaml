@@ -10,9 +10,10 @@
         HorizontalAlignment="Stretch"
         Orientation="Horizontal"
         Margin="0,5,0,5">
+        <!--The width of the textbox is set to align the DONE button with the ADD TASK button od DayView control-->
         <TextBox
             Text="{Binding Name}"
-            Width="200"
+            Width="241"
             Margin="10,0,10,0" />
         <ComboBox
             ItemsSource="{Binding TimeValues}"
@@ -24,6 +25,7 @@
             Content="P"
             FontFamily="Wingdings 2"
             FontSize="26"
+            FontWeight="ExtraBold"
             IsChecked="{Binding Done}"
             VerticalAlignment="Bottom"
             Width="40"
@@ -35,7 +37,7 @@
                             <ControlTemplate TargetType="ToggleButton">
                                 <Border BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="0"
-                                        Background="{TemplateBinding Background}">
+                                        Background="Transparent">
                                     <ContentPresenter HorizontalAlignment="Center"
                                                       VerticalAlignment="Center" />
                                 </Border>
@@ -43,11 +45,11 @@
                         </Setter.Value>
                     </Setter>
                     <Style.Triggers>
-                        <Trigger Property="IsChecked" Value="true">
-                            <Setter Property="Background" Value="MediumSeaGreen" />
-                        </Trigger>
                         <Trigger Property="IsChecked" Value="false">
-                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="SlateGray" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Foreground" Value="LimeGreen" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>

@@ -3,21 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI"
         xmlns:views="clr-namespace:PlanYourDay.UI.Views"
         mc:Ignorable="d"
         Title="Have a productive day !" Height="800" Width="520">
 
     <Window.Resources>
         <DataTemplate x:Key="TasksLevelTemplate">
-            <views:TaskView />
+            <views:TaskView>
+                <UserControl.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Move -> Next Day"/>
+                        <MenuItem Header="Move -> Backlog"/>
+                        <Separator/>
+                        <MenuItem Header="Copy -> Next Day"/>
+                        <MenuItem Header="Copy -> Backlog"/>
+                        <Separator/>
+                        <MenuItem Header="Delete"/>
+                    </ContextMenu>
+                </UserControl.ContextMenu>
+            </views:TaskView>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="DaysLevelTemplate"
                                   ItemsSource="{Binding Tasks}"
                                   ItemTemplate="{StaticResource TasksLevelTemplate}">
-            <views:DayView />
+            <views:DayView/>
         </HierarchicalDataTemplate>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="O"
+                    Command="{Binding OpenCommand}"/>
+        <KeyBinding Modifiers="Ctrl"
+                    Key="S"
+                    Command="{Binding SaveCommand}"/>
+    </Window.InputBindings>
 
     <DockPanel>
         <DockPanel DockPanel.Dock="Bottom">
@@ -39,8 +59,10 @@
             <TreeView ItemsSource="{Binding Backlog}"
                       ItemTemplate="{StaticResource TasksLevelTemplate}" />
         </GroupBox>-->
+        
         <TreeView
                   ItemsSource="{Binding Days}"
-                  ItemTemplate="{StaticResource DaysLevelTemplate}" />
+                  ItemTemplate="{StaticResource DaysLevelTemplate}" 
+                   SelectedItemChanged="DaysTreeView_OnSelectedItemChanged"/>
     </DockPanel>
 </Window>

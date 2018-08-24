@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PlanYourDay.DataService.Models;
+using PlanYourDay.DateTimeHelper;
 
 namespace PlanYourDay.UI.ViewModels
 {
@@ -12,63 +13,17 @@ namespace PlanYourDay.UI.ViewModels
 
         static TaskViewModel()
         {
-            TimeValues = new List<TimeViewModel>
+            TimeValues = new List<TimeViewModel>();
+            foreach( int m in TimeHelper.AllowedTimeBlocks)
             {
-                new TimeViewModel()
-                {
-                    DisplayValue = "0 min",
-                    Value = 0
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "15 min",
-                    Value = 15
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "30 min",
-                    Value = 30
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "45 min",
-                    Value = 45
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "1 hrs",
-                    Value = 60
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "1.5 hrs",
-                    Value = 90
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "2 Hours",
-                    Value = 120
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "2.5 hrs",
-                    Value = 150
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "3 hrs",
-                    Value = 180
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "3.5 hrs",
-                    Value = 210
-                },
-                new TimeViewModel()
-                {
-                    DisplayValue = "4 hrs",
-                    Value = 240
-                }
+                TimeValues.Add(
+
+                    new TimeViewModel()
+                    {
+                        Value = m,
+                        DisplayValue = TimeHelper.TimeToString(m),
+                    }
+                );
             };
         }
 
