@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using PlanYourDay.UI.ViewModels;
+﻿using PlanYourDay.UI.ViewModels;
+using System.Windows;
 
 namespace UI
 {

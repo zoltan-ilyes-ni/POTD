@@ -1,100 +1,86 @@
-﻿using System.Collections.Generic;
+﻿using PlanYourDay.Common.Helpers;
+using PlanYourDay.Common.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using PlanYourDay.DataService.Models;
-using PlanYourDay.DateTimeHelper;
 
 namespace PlanYourDay.UI.ViewModels
 {
     internal class TaskViewModel : ViewModelBase
     {
-        private DayViewModel _day;
-        private ProjectViewModel _project;
-        public TimeViewModel _time;
+        private DayViewModel _dayViewModel;
+        private Task _task;
+        private TimeViewModel _timeViewModel;
 
         static TaskViewModel()
         {
-            TimeValues = new List<TimeViewModel>();
-            foreach( int m in TimeHelper.AllowedTimeBlocks)
+            TimeBlocks = new List<TimeViewModel>();
+            foreach (int m in TimeHelper.AllowedTimeBlocks)
             {
-                TimeValues.Add(
-
-                    new TimeViewModel()
-                    {
-                        Value = m,
-                        DisplayValue = TimeHelper.TimeToString(m),
-                    }
-                );
+                TimeBlocks.Add(new TimeViewModel(m));
             };
         }
 
-        public TaskViewModel(TaskModel taskModel, DayViewModel dayViewModel, ProjectViewModel projectViewModel)
+        public TaskViewModel(Task task, DayViewModel dayViewModel)
         {
-            Day = dayViewModel;
-            Project = projectViewModel;
-            TaskModel = taskModel;
+            _task = task;
+            _dayViewModel = dayViewModel;
             // Todo: this will throw an exception if there is no match
-            Time = TimeValues.First(t => t.Value == TaskModel.Time);
+            Time = TimeBlocks.First(t => t.Minutes == _task.Time);
         }
 
-        private TaskModel TaskModel { get; set; }
-
-        public static List<TimeViewModel> TimeValues { get; private set; }
-
-        public DayViewModel Day
-        {
-            get => _day;
-            set => SetProperty(ref _day, value);
-        }
+        public static List<TimeViewModel> TimeBlocks { get; private set; }
 
         public bool Done
         {
-            get => TaskModel.Done;
+            get => _task.Status == TaskStatus.Done;
             set
             {
-                if (TaskModel.Done != value)
+                bool oldValue = _task.Status == TaskStatus.Done;
+                if (value != oldValue)
                 {
-                    TaskModel.Done = value;
+                    _task.Status = value ? TaskStatus.Done : TaskStatus.Pending;
                     NotifyPropertyChanged(nameof(Done));
+                    NotifyPropertyChanged(nameof(NotDone));
                 }
             }
         }
 
         public string Name
         {
-            get => TaskModel.Name;
+            get => _task.Name;
             set
             {
-                if (TaskModel.Name != value)
+                if (_task.Name != value)
                 {
-                    TaskModel.Name = value;
+                    _task.Name = value;
                     NotifyPropertyChanged(nameof(Name));
                 }
             }
         }
 
-        public ProjectViewModel Project
+        public bool NotDone
         {
-            get => _project;
-            set => SetProperty(ref _project, value);
+            get => !Done;
         }
 
         public int Rank
         {
-            get => TaskModel.Rank;
-            set => TaskModel.Rank = value;
+            get => _task.Rank;
+            set => throw new NotImplementedException();
         }
 
         public TimeViewModel Time
         {
-            get => _time;
+            get => _timeViewModel;
             set
             {
-                if (_time != value)
+                if (_timeViewModel != value)
                 {
-                    _time = value;
-                    TaskModel.Time = _time.Value;
+                    _timeViewModel = value;
+                    _task.Time = _timeViewModel.Minutes;
                     NotifyPropertyChanged(nameof(Time));
-                    Day.NotifyPropertyChanged(nameof(Day.TimeString));
+                    _dayViewModel.NotifyPropertyChanged(nameof(DayViewModel.TasksSummary));
                 }
             }
         }

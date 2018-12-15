@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:PlanYourDay.UI.Views"
         mc:Ignorable="d"
-        Title="Have a productive day !" Height="800" Width="520">
+        Title="Have a productive day !" Height="800" MinWidth="550" SizeToContent="Width">
 
     <Window.Resources>
         <DataTemplate x:Key="TasksLevelTemplate">
             <views:TaskView>
                 <UserControl.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Move -> Next Day"/>
-                        <MenuItem Header="Move -> Backlog"/>
-                        <Separator/>
-                        <MenuItem Header="Copy -> Next Day"/>
-                        <MenuItem Header="Copy -> Backlog"/>
-                        <Separator/>
-                        <MenuItem Header="Delete"/>
+                        <MenuItem Header="Move -> Next Day" />
+                        <MenuItem Header="Move -> Backlog" />
+                        <Separator />
+                        <MenuItem Header="Copy -> Next Day" />
+                        <MenuItem Header="Copy -> Backlog" />
+                        <Separator />
+                        <MenuItem Header="Delete" />
                     </ContextMenu>
                 </UserControl.ContextMenu>
             </views:TaskView>
@@ -26,17 +26,17 @@
         <HierarchicalDataTemplate x:Key="DaysLevelTemplate"
                                   ItemsSource="{Binding Tasks}"
                                   ItemTemplate="{StaticResource TasksLevelTemplate}">
-            <views:DayView/>
+            <views:DayView />
         </HierarchicalDataTemplate>
     </Window.Resources>
 
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl"
                     Key="O"
-                    Command="{Binding OpenCommand}"/>
+                    Command="{Binding OpenCommand}" />
         <KeyBinding Modifiers="Ctrl"
                     Key="S"
-                    Command="{Binding SaveCommand}"/>
+                    Command="{Binding SaveCommand}" />
     </Window.InputBindings>
 
     <DockPanel>
@@ -53,16 +53,20 @@
             </StackPanel>
         </DockPanel>
 
-        <!--<GroupBox Header="Backlog"
-                  Width="480"
-                  DockPanel.Dock="Right">
-            <TreeView ItemsSource="{Binding Backlog}"
-                      ItemTemplate="{StaticResource TasksLevelTemplate}" />
-        </GroupBox>-->
-        
-        <TreeView
+        <TabControl>
+            <TabItem Header="Tasks" Padding="20,5,20,5">
+                <TreeView
                   ItemsSource="{Binding Days}"
-                  ItemTemplate="{StaticResource DaysLevelTemplate}" 
-                   SelectedItemChanged="DaysTreeView_OnSelectedItemChanged"/>
+                  ItemTemplate="{StaticResource DaysLevelTemplate}"
+                  SelectedItemChanged="DaysTreeView_OnSelectedItemChanged" />
+            </TabItem>
+            <TabItem Header="Backlog" Padding="20,5,20,5">
+                <TreeView ItemsSource="{Binding Backlog}"
+                          ItemTemplate="{StaticResource TasksLevelTemplate}" />
+            </TabItem>
+            <TabItem Header="Recurring" Padding="20,5,20,5"/>
+            <TabItem Header="Pomodoro" Padding="20,5,20,5"/>
+            <TabItem Header="Settings" Padding="20,5,20,5"/>
+        </TabControl>
     </DockPanel>
 </Window>

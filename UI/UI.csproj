@@ -109,6 +109,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -118,17 +119,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataService\DataService.csproj">
-      <Project>{25a4754f-cdd2-4533-9a42-89afb5211cbb}</Project>
-      <Name>DataService</Name>
+    <ProjectReference Include="..\FileDataService\FileDataService.csproj">
+      <Project>{f8111ec5-13c1-4091-9244-29043f039361}</Project>
+      <Name>FileDataService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DateTimeHelper\DateTimeHelper.csproj">
-      <Project>{ca3c46ca-3f62-452f-98ad-dd70bc4b9f9b}</Project>
-      <Name>DateTimeHelper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+    <ProjectReference Include="..\Infrastructure\Common.csproj">
       <Project>{bcc42cae-165e-4140-a4b3-94baa672bfdf}</Project>
-      <Name>Infrastructure</Name>
+      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -13,12 +13,16 @@
         <!--The width of the textbox is set to align the DONE button with the ADD TASK button od DayView control-->
         <TextBox
             Text="{Binding Name}"
-            Width="241"
+            IsEnabled="{Binding NotDone}"
+            VerticalContentAlignment="Center"
+            Width="251"
             Margin="10,0,10,0" />
         <ComboBox
-            ItemsSource="{Binding TimeValues}"
+            ItemsSource="{Binding TimeBlocks}"
             SelectedItem="{Binding Time}"
-            Width="150"
+            IsEnabled="{Binding NotDone}"
+            VerticalContentAlignment="Center"
+            Width="100"
             Margin="0,0,10,0"
             Background="Transparent" />
         <ToggleButton

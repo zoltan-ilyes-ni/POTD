@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlanYourDay.UI.Helpers
+﻿namespace PlanYourDay.UI.Helpers
 {
     // This is a cool idea from stackoverflow, unfortunatelly it requires Blender SDK what I don't have installed and I'm lazy to do so
     // https://stackoverflow.com/questions/1000040/data-binding-to-selecteditem-in-a-wpf-treeview

@@ -1,36 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PlanYourDay.Common.Helpers;
+using PlanYourDay.Common.Interfaces;
+using PlanYourDay.Common.Models;
+using PlanYourDay.UI.Helpers;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using PlanYourDay.DataService.Models;
-using PlanYourDay.UI.Helpers;
-using PlanYourDay.DateTimeHelper;
 
 namespace PlanYourDay.UI.ViewModels
 {
     internal class DayViewModel : ViewModelBase
     {
         private ICommand _addTaskCommand;
-        private DataService.DataService _dataService;
-        private string _dateString;
-        private DayModel _dayModel;
+        private IDataService _dataService;
+        private Day _day;
         private ObservableCollection<TaskViewModel> _tasks;
 
-        public DayViewModel(DayModel dayModel, DataService.DataService dataService)
+        public DayViewModel(Day day, IDataService dataService)
         {
-            _dayModel = dayModel;
+            _day = day;
             _dataService = dataService;
 
-            List<TaskViewModel> tasks = new List<TaskViewModel>();
-            foreach (TaskModel task in _dataService.GetTasksByDay(dayModel))
+            Tasks = new ObservableCollection<TaskViewModel>();
+            foreach (Task task in day.Tasks)
             {
-                tasks.Add(new TaskViewModel(task, this, null));
+                Tasks.Add(new TaskViewModel(task, this));
             }
 
-            this.Tasks = new ObservableCollection<TaskViewModel>(tasks.OrderBy(t => t.Rank));
+            this.Tasks = new ObservableCollection<TaskViewModel>(Tasks.OrderBy(t => t.Rank));
 
-            this.IsExpanded = dayModel.Date == DateTime.Today;
+            this.IsExpanded = _day.Date == DateHelper.Today;
         }
 
         public ICommand AddTaskCommand
@@ -43,20 +42,12 @@ namespace PlanYourDay.UI.ViewModels
 
         public DateTime Date
         {
-            get => _dayModel.Date;
+            get => _day.Date;
         }
 
-        public string DateString
+        public string DisplayDate
         {
-            get
-            {
-                if (_dateString == null)
-                {
-                    _dateString = DateHelper.DateToString(Date);
-                }
-
-                return _dateString;
-            }
+            get => DateToString(Date);
         }
 
         public bool IsExpanded { get; set; }
@@ -67,38 +58,52 @@ namespace PlanYourDay.UI.ViewModels
             set => SetProperty(ref _tasks, value);
         }
 
-        public string TimeString
+        public string TasksSummary
         {
             get
             {
                 int all = 0, done = 0;
                 foreach (var t in Tasks)
                 {
-                    all += t.Time.Value;
-                    done += t.Done ? t.Time.Value : 0;
+                    all += t.Time.Minutes;
+                    done += t.Done ? t.Time.Minutes : 0;
                 }
 
-                return $"{TimeHelper.TimeToString(done)} / {TimeHelper.TimeToString(all)}";
+                return $"{TimeViewModel.ToString(done)} / {TimeViewModel.ToString(all)}";
             }
+        }
+
+        private static string DateToString(DateTime date)
+        {
+            if (date == null)
+            {
+                throw new ArgumentNullException(nameof(date));
+            }
+
+            if (date == DateHelper.Today)
+            {
+                return "Today";
+            }
+
+            if (date == DateHelper.Tomorrow)
+            {
+                return "Tomorrow";
+            }
+
+            if (date == DateHelper.Yesterday)
+            {
+                return "Yesterday";
+            }
+
+            return date.DayOfWeek + ", " + date.ToShortDateString();
         }
 
         private void AddTask()
         {
-            Tasks.Add(
-                new TaskViewModel(
-                    taskModel: _dataService.AddTaskToDay(
-                                                day: _dayModel,
-                                                name: "",
-                                                notes: "",
-                                                priority: 1,
-                                                project: null,
-                                                rank: 0,
-                                                done: false,
-                                                time: 0),
-                    dayViewModel: this,
-                    projectViewModel: null));
-
-            NotifyPropertyChanged(nameof(TimeString));
+            Task newTask = new Task();
+            _dataService.CreateTask(_day, newTask);
+            Tasks.Add(new TaskViewModel(newTask, this));
+            NotifyPropertyChanged(TasksSummary);
         }
     }
 }

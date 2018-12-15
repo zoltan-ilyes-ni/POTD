@@ -1,30 +1,27 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using PlanYourDay.Common.Interfaces;
+using PlanYourDay.Common.Models;
+using PlanYourDay.UI.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
-using PlanYourDay.DataService.Models;
-using PlanYourDay.UI.Helpers;
 
 namespace PlanYourDay.UI.ViewModels
 {
     internal class MainViewModel : ViewModelBase
     {
         private ObservableCollection<TaskViewModel> _backlog;
-        private DataService.DataService _dataService;
+        private IDataService _dataService;
         private ObservableCollection<DayViewModel> _days;
         private ICommand _openCommand, _saveCommand;
 
-        public TaskViewModel SelectedTask
-        {
-            get; set;
-        }
-
         public MainViewModel()
         {
-            _dataService = new DataService.DataService(@"d:\Work\PlanYourDay.json");
+            _dataService = new FileDataService.FileDataService();
+            _dataService.Open(@"c:\Temp\PlanYourDay.json");
             LoadContent();
         }
 
@@ -33,6 +30,8 @@ namespace PlanYourDay.UI.ViewModels
             get => _backlog;
             private set => SetProperty(ref _backlog, value);
         }
+
+        public string ConnectionString { get => _dataService?.ConnectionString; }
 
         public ObservableCollection<DayViewModel> Days
         {
@@ -56,7 +55,10 @@ namespace PlanYourDay.UI.ViewModels
             }
         }
 
-        public string SourcePath { get => _dataService?.SourcePath; }
+        public TaskViewModel SelectedTask
+        {
+            get; set;
+        }
 
         private void LoadContent()
         {
@@ -68,7 +70,7 @@ namespace PlanYourDay.UI.ViewModels
             // --------------- Days ------------------------
             List<DayViewModel> days = new List<DayViewModel>();
 
-            foreach (DayModel day in _dataService.GetAllDays())
+            foreach (Day day in _dataService.GetDays())
             {
                 days.Add(new DayViewModel(day, _dataService));
             }
@@ -78,27 +80,24 @@ namespace PlanYourDay.UI.ViewModels
             // -------------- Backlog ------------------------
             List<TaskViewModel> backlog = new List<TaskViewModel>();
             //foreach(TaskModel in )
-
-            NotifyPropertyChanged(nameof(SourcePath));
         }
 
         private void Open()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
-                FileName = SourcePath,
                 Filter = "JSON Documents|*.json",
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                _dataService.Load(openFileDialog.FileName);
+                _dataService.Open(openFileDialog.FileName);
                 LoadContent();
             }
         }
 
         private void Save()
         {
-            if (!string.IsNullOrEmpty(SourcePath))
+            if (!string.IsNullOrEmpty(ConnectionString))
             {
                 _dataService.Save();
             }
@@ -106,13 +105,13 @@ namespace PlanYourDay.UI.ViewModels
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog()
                 {
-                    FileName = SourcePath,
+                    FileName = ConnectionString,
                     Filter = "JSON Documents|*.json",
                 };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     _dataService.SaveAs(saveFileDialog.FileName);
-                    NotifyPropertyChanged(nameof(SourcePath));
+                    NotifyPropertyChanged(nameof(ConnectionString));
                 }
             }
         }
